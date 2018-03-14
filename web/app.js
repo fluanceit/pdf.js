@@ -750,6 +750,15 @@ var PDFViewerApplication = {
     );
   },
 
+  /**
+   * Set the filename to save file. 
+   * Needed when not using a URL to load PDF (eg: blob)
+   * @param {String} filename The filename to be used when saving the file.
+   */
+  setDownloadFilename: function pdfViewDownloadSetFilename(filename) {
+    this.downloadFilename = filename;
+  },
+
   download: function pdfViewDownload() {
     function downloadByUrl() {
       downloadManager.downloadUrl(url, filename);
@@ -758,7 +767,7 @@ var PDFViewerApplication = {
     var url = this.baseUrl;
     // Use this.url instead of this.baseUrl to perform filename detection based
     // on the reference fragment as ultimate fallback if needed.
-    var filename = getPDFFileNameFromURL(this.url);
+    var filename = this.downloadFilename || getPDFFileNameFromURL(this.url);
     var downloadManager = this.downloadManager;
     downloadManager.onerror = function (err) {
       // This error won't really be helpful because it's likely the
